@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>拖拽</title>
+<style>
+    #box{
+        background: red;
+        height: 100px;
+        width: 100px;
+        border: 1px solid yellow;
+        text-align: center;
+        line-height: 100px;
+        position: absolute;
+    }
+    #box:hover{
+        background: rgba(255,0,0,0.5);
+        border: 1px solid black;
+    }
+    #book{
+        height:200px;
+        width: 200px;
+        position: absolute;
+        left: 400px;
+        top: 100px;
+    }
+</style>
+<script>
+window.onload = function () {
+        var box = document.getElementById('box');
+        var book = document.getElementById('book');
+        drag(box);
+        drag(book);
+        function drag(obj){
+            obj.onmousedown = function (ev) {
+                var ev = ev || event;
+                var disX = ev.clientX - this.offsetLeft;
+                var disY = ev.clientY - this.offsetTop;
+                document.onmousemove = function (ev){
+                    var ev = ev || event;
+                    var T = ev.clientY - disY;
+                    var L = ev.clientX - disX;
+                    if(T < 50){
+                        T = 0;
+                    }else if(T > document.documentElement.clientHeight - obj.offsetHeight - 50){
+                        T = document.documentElement.clientHeight - obj.offsetHeight;
+                    }
+                    if(L < 50){
+                        L = 0;
+                    }else if(L > document.documentElement.clientWidth - obj.offsetWidth - 50){
+                        L = document.documentElement.clientWidth - obj.offsetWidth;
+                    }
+
+                    obj.style.left = L +'px';
+                    obj.style.top = T +'px';
+                }
+                document.onmouseup = function () {
+                    document.onmousemove = document.onmouseup = null;
+                }
+                return false;
+            }
+        }
+    }
+</script>
+</head>
+<body>
+<div id="box">移动我</div>
+<img id="book" src="book.jpg" alt="" />
+</body>
+</html>
